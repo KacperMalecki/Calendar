@@ -16,6 +16,16 @@ FetchContent_MakeAvailable(raylib)
 
 add_executable(Calendar WIN32
         main.c
-        resources.rc)
+        resources.rc
+        Calendar.h
+        Calendar.c
+        Tile.c
+        Tile.h
+        Settings.c
+        Settings.h
+        RaylibExtension.c
+        RaylibExtension.h
+        Button.c
+        Button.h)
 
 target_link_libraries(Calendar PRIVATE raylib)
