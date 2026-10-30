@@ -1,0 +1,6 @@
+#ifndef CALENDAR_UTILITIES_H
+#define CALENDAR_UTILITIES_H
+
+void ClearTheBuffer();
+
+#endif //CALENDAR_UTILITIES_H

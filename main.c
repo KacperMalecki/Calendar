@@ -2,7 +2,9 @@
 #include "raylib.h"
 #include "rlgl.h"
 #include "Calendar.h"
+#include "LanguageTable.h"
 #include "RaylibExtension.h"
+#include "Settings.h"
 
 const static int REFERENCE_WIDTH = 1920;
 const static int REFERENCE_HEIGHT = 1080;
@@ -11,27 +13,49 @@ const static char* SETTINGS_PATH = "Data/Settings.txt";
 const static char* EVENTS_PATH = "Data/Events.txt";
 const static char* ICON_PATH = "Images/icon.png";
 const static char* FONT_PATH = "Fonts/inconsolata.ttf";
+const static char* LANG_EN_PATH = "Lang/Lang-EN.txt";
+const static char* LANG_PL_PATH = "Lang/Lang-PL.txt";
+const static char* LANG_FR_PATH = "Lang/Lang-FR.txt";
 
-bool LoadData();
-void BuildWindow(Vector2 screenSize);
+
+bool LoadData(Settings *settings, LanguageTable* languageTable);    //  TODO - there will be themes and events to load
+bool SaveData(Settings *settings);                                  //  TODO - save settings and events
+void BuildWindow(Vector2 screenSize, bool fullscreen);
 void Draw(Calendar *calendar, Font* font);
 
 int main(void)
 {
-    //  Window initialization
-    Vector2 screenSize = {1280, 720};   //  TODO: REMOVE IT LATER!!!
-    BuildWindow(screenSize);
+    bool error = false;
+    char errorMssg[256] = "";
 
-    //  Calendar initialization
-    Calendar cal = {{90.f, 200.f}, {240.f, 135.f}, {8.f, 8.f}};
-    InitCalendar(&cal);
+    //  Load the most of data - excluding font, which has to be loaded AFTER the window is initialized
+    Settings settings;
+    LanguageTable languageTable;
+    InitLanguageTable(&languageTable);
+
+    LoadData(&settings, &languageTable);
+
+    //  Load events
+    /*
+     *  TODO
+     *
+     */
+    LanguageUnit *unit = GetLanguageUnit(&languageTable, "Monday");//   TEST TEST TEST TEST TEST ^^^^^^^^
+
+    //  Window initialization
+    BuildWindow((Vector2){(float)settings.resolutionWidth, (float)settings.resolutionHeight}, settings.fullscreen);
 
     //  Load external font
     Font myFont = LoadFontEx(FONT_PATH, 150, 0, 383);
     SetTextureFilter(myFont.texture, TEXTURE_FILTER_TRILINEAR);
 
+    //  Calendar initialization
+    Calendar cal = {{90.f, 200.f}, {240.f, 135.f}, {8.f, 8.f}};
+    InitCalendar(&cal, &languageTable);
+
     Vector2 screenScale, mousePosScaled;
 
+    //  Main Loop
     while (!WindowShouldClose())
     {
         screenScale = (Vector2){(float)GetScreenWidth() / (float)REFERENCE_WIDTH, (float)GetScreenHeight() / (float)REFERENCE_HEIGHT};
@@ -43,6 +67,7 @@ int main(void)
         rlPushMatrix();
         rlScalef( screenScale.x, screenScale.y, 1.0f);
         Draw(&cal, &myFont);
+        DrawTextWithOrigin(&myFont, unit->value, (Vector2){1920, 50}, 30, 1, PURPLE, TEXT_RIGHT);   //  TEST TEST
         rlPopMatrix();
         EndDrawing();
 
@@ -60,24 +85,106 @@ int main(void)
 
     UnloadFont(myFont);
 
+    SaveData(&settings);
+
     CloseWindow();
     return 0;
 }
 
-bool LoadData() {
-    bool result = false;
-    //...
+bool LoadData(Settings *settings, LanguageTable* languageTable) {
+    bool result = true;
+    //  char errorMssg[256] = "";           TODO - Pass an error message and show it to the user!!!!!!!!!
+    //  Settings
+    if (!LoadSettings(settings, SETTINGS_PATH)) {
+        if (FileExists(SETTINGS_PATH)) {
+            /*
+             *  Corrupted "settings.txt" file!  TODO
+             *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             */
+            result = false;
+        }
+        else if (!GenerateSettingsFile(settings, SETTINGS_PATH)) {
+            /*
+             *  The program could not generate a new settings file!     TODO
+             *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+             */
+            result = false;
+        }
+    }
+    //  Language table
+    switch (settings->language) {
+        case LANG_ENGLISH:
+            if (!LoadLanguage(languageTable, LANG_EN_PATH)) {
+                /*
+                *  Corrupted "Lang-EN.txt" file!  TODO
+                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                */
+                result = false;
+            }
+            break;
+        case LANG_POLISH:
+            if (!LoadLanguage(languageTable, LANG_PL_PATH)) {
+                /*
+                *  Corrupted "Lang-PL.txt" file!  TODO
+                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                */
+                result = false;
+            }
+            break;
+        case LANG_FRENCH:
+            if (!LoadLanguage(languageTable, LANG_FR_PATH)) {
+                /*
+                *  Corrupted "Lang-FR.txt" file!  TODO
+                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                */
+                result = false;
+            }
+            break;
+        default:
+            /*
+                *  No language file found!  TODO
+                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                */
+            result = false;
+            break;
+    }
     return result;
 }
 
-void BuildWindow(Vector2 screenSize) {
+bool SaveData(Settings *settings) {
+    bool result = true;
+    //  Save settings
+    settings->resolutionWidth = GetScreenWidth();
+    settings->resolutionHeight = GetScreenHeight();
+    settings->fullscreen = IsWindowFullscreen();
+
+    if (!SaveSettings(settings, SETTINGS_PATH)) {
+        /*
+        *  The program could not save changes to "Settings.txt"! Some data might be lost!
+        *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        */
+        result = false;
+    }
+    //  Save events
+    //if (!SaveEvents(events, EVENTS_PATH)) {
+    //    /*
+    //    *  The program could not save changes to "Events.txt"! Some data might be lost!
+    //    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //    */
+    //    result = false;
+    //}
+    return result;
+}
+
+void BuildWindow(Vector2 screenSize, bool fullscreen) {
     InitWindow(screenSize.x, screenSize.y, "Calendar");
     SetWindowState(FLAG_WINDOW_RESIZABLE);
-
+    if (fullscreen == 1) {
+        ToggleFullscreen();
+    }
     Image icon = LoadImage(ICON_PATH);
     SetWindowIcon(icon);
     UnloadImage(icon);
-
     SetTargetFPS(60);
 }
 

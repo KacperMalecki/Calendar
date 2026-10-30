@@ -26,6 +26,12 @@ add_executable(Calendar WIN32
         RaylibExtension.c
         RaylibExtension.h
         Button.c
-        Button.h)
+        Button.h
+        LanguageTable.c
+        LanguageTable.h
+        Utilities.c
+        Utilities.h
+        TextField.c
+        TextField.h)
 
 target_link_libraries(Calendar PRIVATE raylib)
