@@ -12,9 +12,11 @@ typedef struct Calendar {
     Color weekendDayClr;
     Color normalOutDayClr;
     Color weekendOutDayClr;
-    Color highlightDelta;   //  by how much to change the default color, so it's treated as a highlighted version
-    Color pressedDelta;     //  by how much to change the default color, so it's treated as a pressed version
+    Vector4 highlightDelta;   //  by how much to change the default color, so it's treated as a highlighted version
+    Vector4 pressedDelta;     //  by how much to change the default color, so it's treated as a pressed version
+    Font* font;
     char weekNumbers[6][3];     //  rows description
+    Vector2 textOffsetForWeekNumbers;
     LanguageUnit *dayName[7];       //  days of the week
     LanguageUnit *monthsName[12];   //  months
 
@@ -22,8 +24,8 @@ typedef struct Calendar {
 
 }Calendar;
 
-void InitCalendar(Calendar *calendar, LanguageTable* languageTable);
-void DrawCalendar(Calendar *calendar);
+void InitCalendar(Calendar *calendar, LanguageTable* languageTable, Font* font);
+void DrawCalendar(Calendar *calendar, Font* font);
 void UpdateCalendar(Calendar *calendar, Vector2 mousePosition);
 void ReloadLanguage(Calendar *calendar, LanguageTable *languageTable);
 

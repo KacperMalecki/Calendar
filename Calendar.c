@@ -1,35 +1,43 @@
 #include "Calendar.h"
+#include "raylib.h"
 
-void InitCalendar(Calendar *calendar, LanguageTable *languageTable) {
+void InitCalendar(Calendar *calendar, LanguageTable *languageTable, Font* font) {
     Vector2 tileSize = calendar->tileSize;
     Vector2 calPos = calendar->position;
     Vector2 spacing = calendar->spacing;
 
+    Color highlight = PINK, pressed = PINK;                     //  TODO - read actual colors!!!!!!!!!!!!!!!!
+    ChangeColorByDelta(&highlight, calendar->highlightDelta);
+    ChangeColorByDelta(&pressed, calendar->pressedDelta);
+    float fontSize = 50.f;                                      //TESTESTSETSETSETSETSETSETSETSETSET
+
+    calendar->font = font;
+
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 7; j++) {
-            InitButton(&(calendar->tiles[i][j].button), (Rectangle){},
-                (Color){150,150,150,255}, (Color){120,120,120,255}, (Color){90,90,90,255}); //  TEST TEST TEST
+            //InitButton(&(calendar->tiles[i][j].button), (Rectangle){},
+            InitTile(&calendar->tiles[i][j], (Rectangle){calPos.x + (float)j * tileSize.x + (float)j *spacing.x,
+            calPos.y + (float)i * tileSize.y + (float)i *spacing.y,
+            tileSize.x, tileSize.y}, PINK, highlight, pressed, font, "31.");
+            calendar->tiles[i][j].dayNr.setts.size = fontSize;
+            SetTextOffsetForTile(&calendar->tiles[i][j], calendar->textOffsetForWeekNumbers);
+                //(Color){150,150,150,255}, (Color){120,120,120,255}, (Color){90,90,90,255}); //  TEST TEST TEST
             /*if ((i + j) % 2 == 0) {                     //  TEST TEST TEST TEST TEST TEST
                 calendar->tiles[i][j].color = RED;      //  TEST TEST TEST TEST TEST TEST
             }
             else
                 calendar->tiles[i][j].color = BLUE;*/     //  TEST TEST TEST TEST TEST TEST
-            calendar->tiles[i][j].rect.x = calPos.x + (float)j * tileSize.x + (float)j *spacing.x;
-            calendar->tiles[i][j].rect.y = calPos.y + (float)i * tileSize.y + (float)i *spacing.y;
-            calendar->tiles[i][j].rect.width = tileSize.x;
-            calendar->tiles[i][j].rect.height = tileSize.y;
-
-            calendar->tiles[i][j].button.rect = calendar->tiles[i][j].rect;
         }
     }
 
     ReloadLanguage(calendar, languageTable);
 }
 
-void DrawCalendar(Calendar *calendar) {
+void DrawCalendar(Calendar *calendar, Font* font) {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 7; j++) {
             DrawTile(&calendar->tiles[i][j]);
+
         }
     }
 }

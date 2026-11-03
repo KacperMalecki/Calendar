@@ -2,15 +2,20 @@
 #define CALENDAR_TILE_H
 #include "raylib.h"
 #include "Button.h"
+#include "TextField.h"
+#include "LanguageTable.h"
 
 typedef struct Tile {
     Rectangle rect;
     Button button;
+    TextField dayNr;
+    Vector2 textOffset;
     //
 
 }Tile;
 
-void InitTile(Tile *tile, Rectangle rect, Color normal, Color highlighted, Color pressed);
-void DrawTile(Tile *Tile);
+void InitTile(Tile *tile, Rectangle rect, Color normal, Color highlighted, Color pressed, Font* font, char* text);
+void DrawTile(Tile *tile);
+void SetTextOffsetForTile(Tile *tile, Vector2 textOffset);
 
 #endif //CALENDAR_TILE_H

@@ -5,7 +5,7 @@
 #include "raylib.h"
 #include "RaylibExtension.h"
 
-typedef struct TextField {
+typedef struct TextFieldBase {
     Vector2 position;
     TextOrigin origin;
     float size;
@@ -13,9 +13,21 @@ typedef struct TextField {
     Font* font;
     Color color;
     LanguageUnit* languageUnit;
+}TextFieldBase;
+
+typedef struct TextField {
+    TextFieldBase setts;
+    char* text;
 }TextField;
 
-void InitTextField(TextField* textField, Font* font, LanguageUnit* unit);
-void SetDimensionsForTextField(TextField* textField, Vector2 position, float size, TextOrigin origin);
+typedef struct TextFieldLocalized {
+    TextFieldBase setts;
+    LanguageUnit* localizedText;
+}TextFieldLocalized;
+
+void InitTextField(TextField* textField, Font* font, char* text);
+void InitTextFieldLocalized(TextFieldLocalized* textFieldLocalized, Font* font, LanguageUnit* unit);
+void SetDimensionsForTextField(TextFieldBase* textFieldBase, Vector2 position, float size, TextOrigin origin);
 void DrawTextField(TextField* textField);
+void DrawTextFieldLocalized(TextFieldLocalized* textFieldLocalized);
 #endif //CALENDAR_TEXTFIELD_H

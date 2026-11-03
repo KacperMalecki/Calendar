@@ -32,6 +32,14 @@ add_executable(Calendar WIN32
         Utilities.c
         Utilities.h
         TextField.c
-        TextField.h)
+        TextField.h
+        Date.c
+        Date.h
+        ProgramState.c
+        ProgramState.h
+        CalendarState.c
+        CalendarState.h
+        SettingsState.c
+        SettingsState.h)
 
 target_link_libraries(Calendar PRIVATE raylib)

@@ -1,4 +1,5 @@
 #include "RaylibExtension.h"
+#include "Utilities.h"
 
 void DrawTextWithOrigin(Font* font, const char* text, Vector2 position, float fontSize, float spacing, Color tint, TextOrigin type) {
     Vector2 textSize = MeasureTextEx(*font, text, fontSize, spacing);
@@ -23,4 +24,11 @@ void DrawTextWithOrigin(Font* font, const char* text, Vector2 position, float fo
 void WorldToScreenPosition(Vector2 worldPosition, Vector2* screenPosition, Vector2 worldSize) {
     Vector2 scale = {worldPosition.x / (float)GetScreenWidth(), worldPosition.y / (float)GetScreenHeight()};
     *screenPosition = (Vector2){worldSize.x * scale.x, worldSize.y * scale.y};
+}
+
+void ChangeColorByDelta(Color* src, Vector4 delta) {
+    src->r = (unsigned char)(ClampInt((int)(src->r) + (int)(delta.x), 0, 255));
+    src->g = (unsigned char)(ClampInt((int)(src->g) + (int)(delta.y), 0, 255));
+    src->b = (unsigned char)(ClampInt((int)(src->b) + (int)(delta.z), 0, 255));
+    src->a = (unsigned char)(ClampInt((int)(src->a) + (int)(delta.w), 0, 255));
 }
