@@ -4,16 +4,18 @@
 #include "Tile.h"
 #include "LanguageTable.h"
 
-typedef struct Calendar {
+typedef struct{
     Vector2 position;
     Vector2 tileSize;
     Vector2 spacing;    //  spacing between tiles
     Color normalDayClr;
+    Color highlightedDayClr;
+    Color pressedDayClr;
     Color weekendDayClr;
+    Color weekendHighlightedDayClr;
+    Color weekendPressedDayClr;
     Color normalOutDayClr;
     Color weekendOutDayClr;
-    Vector4 highlightDelta;   //  by how much to change the default color, so it's treated as a highlighted version
-    Vector4 pressedDelta;     //  by how much to change the default color, so it's treated as a pressed version
     Font* font;
     char weekNumbers[6][3];     //  rows description
     Vector2 textOffsetForWeekNumbers;

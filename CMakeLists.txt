@@ -40,6 +40,20 @@ add_executable(Calendar WIN32
         CalendarState.c
         CalendarState.h
         SettingsState.c
-        SettingsState.h)
+        SettingsState.h
+        TodayDisplay.c
+        TodayDisplay.h
+        Event.c
+        Event.h
+        ColorTheme.c
+        ColorTheme.h
+        TextureButton.c
+        TextureButton.h
+        TextFieldButton.c
+        TextFieldButton.h
+        ToggleButton.c
+        ToggleButton.h
+        AboutTheProgramState.c
+        AboutTheProgramState.h)
 
 target_link_libraries(Calendar PRIVATE raylib)

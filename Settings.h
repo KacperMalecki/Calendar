@@ -1,25 +1,25 @@
 #ifndef CALENDAR_SETTINGS_H
 #define CALENDAR_SETTINGS_H
 
-typedef enum Language {
+typedef enum{
     LANG_NONE,
     LANG_ENGLISH,
     LANG_POLISH,
     LANG_FRENCH
 }Language;
 
-typedef enum Theme {
-    THEME_BRIGHT,
+typedef enum{
+    THEME_LIGHT,
     THEME_DARK
 }Theme;
 
-typedef enum FirstDayOfTheWeek {
+typedef enum{
     FDW_MONDAY,
     FDW_SATURDAY,
     FDW_SUNDAY
 }FirstDayOfTheWeek;
 
-typedef struct Settings {
+typedef struct{
     int resolutionWidth;
     int resolutionHeight;
     bool fullscreen;

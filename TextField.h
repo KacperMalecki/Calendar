@@ -5,22 +5,21 @@
 #include "raylib.h"
 #include "RaylibExtension.h"
 
-typedef struct TextFieldBase {
+typedef struct{
     Vector2 position;
     TextOrigin origin;
     float size;
     float spacing;
     Font* font;
-    Color color;
-    LanguageUnit* languageUnit;
+    Color color;;
 }TextFieldBase;
 
-typedef struct TextField {
+typedef struct{
     TextFieldBase setts;
     char* text;
 }TextField;
 
-typedef struct TextFieldLocalized {
+typedef struct{
     TextFieldBase setts;
     LanguageUnit* localizedText;
 }TextFieldLocalized;

@@ -5,7 +5,7 @@
 #include "TextField.h"
 #include "LanguageTable.h"
 
-typedef struct Tile {
+typedef struct{
     Rectangle rect;
     Button button;
     TextField dayNr;

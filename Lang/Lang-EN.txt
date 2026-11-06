@@ -44,3 +44,19 @@ Polish
 Polish
 French
 French
+Language
+Language
+Fullscreen
+Fullscreen
+FDW
+First day of the week
+Light
+Light
+Dark
+Dark
+ExitToDesktop
+Exit to desktop
+AboutTheProgram
+About the program
+Theme
+Theme

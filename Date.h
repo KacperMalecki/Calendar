@@ -2,7 +2,7 @@
 #define CALENDAR_DATE_H
 #include <time.h>
 
-typedef enum DateType {
+typedef enum{
     DATE_YEAR,
     DATE_MONTH,
     DATE_DAY,
@@ -16,5 +16,8 @@ typedef enum DateType {
 int GetCurrentYear();
 int GetFromToday(DateType type);
 int GetFromSpecificDay(DateType type, time_t time);
+
+const char* DayOfTheWeekToString(int dayOfTheWeek);
+const char* MonthNumberToString(int monthNumber);
 
 #endif //CALENDAR_DATE_H

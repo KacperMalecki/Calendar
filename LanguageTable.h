@@ -1,14 +1,14 @@
 #ifndef CALENDAR_LANGUAGETABLE_H
 #define CALENDAR_LANGUAGETABLE_H
 
-#define NUMBER_OF_LANGUAGE_UNITS 23
+#define NUMBER_OF_LANGUAGE_UNITS 31
 
-typedef struct LanguageUnit {
+typedef struct{
     char* key;
     char* value;
 }LanguageUnit;
 
-typedef struct LanguageTable {
+typedef struct{
     LanguageUnit languageUnits[NUMBER_OF_LANGUAGE_UNITS];
 
 }LanguageTable;

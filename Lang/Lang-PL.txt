@@ -44,3 +44,19 @@ Polish
 Polski
 French
 Francuski
+Language
+Język
+Fullscreen
+Pełny ekran
+FDW
+Pierwszy dzień tygodnia
+Light
+Jasny
+Dark
+Ciemny
+ExitToDesktop
+Wyjście do pulpitu
+AboutTheProgram
+O programie
+Theme
+Motyw

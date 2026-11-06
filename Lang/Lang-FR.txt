@@ -44,3 +44,19 @@ Polish
 Polonais
 French
 Français
+Language
+Langue
+Fullscreen
+Plein écran
+FDW
+Premier jour de la semaine
+Light
+Brillant
+Dark
+Sombre
+ExitToDesktop
+Quitter vers le bureau
+AboutTheProgram
+À propos du programme
+Theme
+Thème

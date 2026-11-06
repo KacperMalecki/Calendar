@@ -1,6 +1,7 @@
 #include "ProgramState.h"
 
 #include "CalendarState.h"
+#include "ColorTheme.h"
 #include "LanguageTable.h"
 #include "Settings.h"
 #include "raylib.h"
@@ -16,11 +17,12 @@ extern const char* FONT_PATH;
 extern const char* LANG_EN_PATH;
 extern const char* LANG_PL_PATH;
 extern const char* LANG_FR_PATH;
+extern const char* LIGHT_THEME_PATH;
+extern const char* DARK_THEME_PATH;
 
-bool LoadData(Settings *settings, LanguageTable* languageTable);    //  TODO - there will be themes and events to load
-bool SaveData(Settings *settings);                                  //  TODO - save settings and events
-void BuildWindow(Vector2 screenSize, bool fullscreen);
-void LoopThroughState(ProgramState* currentState, ProgramState loadedState);
+static bool LoadData(Settings *settings, LanguageTable* languageTable, ColorTheme* colorTheme);    //  TODO - there will be events to load
+static bool SaveData(Settings *settings);                                  //  TODO - save events
+static void BuildWindow(Vector2 screenSize, bool fullscreen);
 
 void ProgramLoop() {
     //  load data
@@ -31,19 +33,22 @@ void ProgramLoop() {
     //  Load the most of data - excluding font, which has to be loaded AFTER the window is initialized
     Settings settings;
     LanguageTable languageTable;
-    InitLanguageTable(&languageTable);
+    ColorTheme colorTheme;
 
-    LoadData(&settings, &languageTable);
+    InitLanguageTable(&languageTable);
+    InitColorTheme(&colorTheme);
+
+    LoadData(&settings, &languageTable, &colorTheme);
 
     //  Load events
     /*
      *  TODO
      *
      */
-    LanguageUnit *unit = GetLanguageUnit(&languageTable, "Monday");//   TEST TEST TEST TEST TEST ^^^^^^^^
 
     //  Window initialization
     BuildWindow((Vector2){(float)settings.resolutionWidth, (float)settings.resolutionHeight}, settings.fullscreen);
+    SetWindowTitle(GetLanguageUnit(&languageTable, "Calendar")->value);
 
     //  Load external font
     Font myFont = LoadFontEx(FONT_PATH, 150, 0, 383);
@@ -57,8 +62,9 @@ void ProgramLoop() {
         switch (currentState) {
             case STATE_CALENDAR:
                 CalendarState sttCal;
-                InitCalendarState(&sttCal, &languageTable, &settings, &myFont);
+                InitCalendarState(&sttCal, &languageTable, &settings, &colorTheme, &myFont, errorMssg);
                 RunCalendarState(&sttCal, &currentState);
+                UnloadCalendarState(&sttCal);
                 break;
             case STATE_EVENTS_LIST:
                 //  TODO:
@@ -66,8 +72,9 @@ void ProgramLoop() {
             case STATE_SETTINGS:
                 //  TODO:
                 SettingsState sttSet;
-                InitSettingsState(&sttSet, &languageTable, &settings, &myFont);
+                InitSettingsState(&sttSet, &languageTable, &settings, &colorTheme, &myFont, errorMssg);
                 RunSettingsState(&sttSet, &currentState);
+                UnloadSettingsState(&sttSet);
                 break;
             case STATE_ABOUT_THE_PROGRAM:
                 //  TODO:
@@ -117,7 +124,7 @@ void ScaleMousePosition(Vector2* mousePosScaled) {
     WorldToScreenPosition(GetMousePosition(), mousePosScaled, (Vector2){REFERENCE_WIDTH, REFERENCE_HEIGHT});
 }
 
-bool LoadData(Settings *settings, LanguageTable* languageTable) {
+bool LoadData(Settings *settings, LanguageTable* languageTable, ColorTheme* colorTheme) {
     bool result = true;
     //  char errorMssg[256] = "";           TODO - Pass an error message and show it to the user!!!!!!!!!
     //  Settings
@@ -138,41 +145,73 @@ bool LoadData(Settings *settings, LanguageTable* languageTable) {
         }
     }
     //  Language table
-    switch (settings->language) {
-        case LANG_ENGLISH:
-            if (!LoadLanguage(languageTable, LANG_EN_PATH)) {
+    if (result) {
+        switch (settings->language) {
+            case LANG_ENGLISH:
+                if (!LoadLanguage(languageTable, LANG_EN_PATH)) {
+                    /*
+                    *  Corrupted "Lang-EN.txt" file!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                    result = false;
+                }
+                break;
+            case LANG_POLISH:
+                if (!LoadLanguage(languageTable, LANG_PL_PATH)) {
+                    /*
+                    *  Corrupted "Lang-PL.txt" file!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                    result = false;
+                }
+                break;
+            case LANG_FRENCH:
+                if (!LoadLanguage(languageTable, LANG_FR_PATH)) {
+                    /*
+                    *  Corrupted "Lang-FR.txt" file!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                    result = false;
+                }
+                break;
+            default:
                 /*
-                *  Corrupted "Lang-EN.txt" file!  TODO
+                    *  No language file found!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                result = false;
+                break;
+        }
+    }
+    //  Color theme
+    if (result) {
+        switch (settings->theme) {
+            case THEME_LIGHT:
+                if (!LoadColorTheme(colorTheme, LIGHT_THEME_PATH)) {
+                    /*
+                    *  Corrupted "LightTheme.txt" file!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                    result = false;
+                }
+                break;
+            case THEME_DARK:
+                if (!LoadColorTheme(colorTheme, DARK_THEME_PATH)) {
+                    /*
+                    *  Corrupted "DarkTheme.txt" file!  TODO
+                    *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    */
+                    result = false;
+                }
+                break;
+            default:
+                /*
+                *  No color theme file found!  TODO
                 *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 */
                 result = false;
-            }
-            break;
-        case LANG_POLISH:
-            if (!LoadLanguage(languageTable, LANG_PL_PATH)) {
-                /*
-                *  Corrupted "Lang-PL.txt" file!  TODO
-                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                */
-                result = false;
-            }
-            break;
-        case LANG_FRENCH:
-            if (!LoadLanguage(languageTable, LANG_FR_PATH)) {
-                /*
-                *  Corrupted "Lang-FR.txt" file!  TODO
-                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                */
-                result = false;
-            }
-            break;
-        default:
-            /*
-                *  No language file found!  TODO
-                *  ERROR - HANDLE IT IN SOME WAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                */
-            result = false;
-            break;
+                break;
+        }
     }
     return result;
 }
@@ -215,33 +254,4 @@ void BuildWindow(Vector2 screenSize, bool fullscreen) {
     SetWindowIcon(icon);
     UnloadImage(icon);
     SetTargetFPS(60);
-}
-
-void LoopThroughState(ProgramState* currentState, ProgramState loadedState) {
-    Vector2 screenScale, mousePosScaled;
-
-    /*while (*currentState == loadedState) {
-        screenScale = (Vector2){(float)GetScreenWidth() / (float)REFERENCE_WIDTH, (float)GetScreenHeight() / (float)REFERENCE_HEIGHT};
-
-        //  Drawing
-        BeginDrawing();
-        ClearBackground(WHITE);
-        //  Screen scaling
-        rlPushMatrix();
-        rlScalef( screenScale.x, screenScale.y, 1.0f);
-        Draw(&cal, &myFont);
-        DrawTextWithOrigin(&myFont, unit->value, (Vector2){1920, 50}, 30, 1, PURPLE, TEXT_RIGHT);   //  TEST TEST
-        rlPopMatrix();
-        EndDrawing();
-
-        //  Events / Input
-        if (IsKeyReleased(KEY_SPACE)) {
-            ToggleFullscreen();
-        }
-
-        //  Update
-        WorldToScreenPosition(GetMousePosition(), &mousePosScaled, (Vector2){REFERENCE_WIDTH, REFERENCE_HEIGHT});
-
-        UpdateCalendar(&cal, mousePosScaled);
-    }*/
 }

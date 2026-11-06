@@ -21,6 +21,7 @@ void InitButton(Button *button, Rectangle rect, Color normal, Color highlighted,
     button->normal = normal;
     button->highlighted = highlighted;
     button->pressed = pressed;
+    button->wasPressed = false;
 }
 
 void UpdateButton(Button *button, Vector2 mousePosition) {
@@ -30,10 +31,10 @@ void UpdateButton(Button *button, Vector2 mousePosition) {
     //  cursor inside the button
     if (CheckCollisionPointRec(mousePosition, button->rect)) {
         //  mouse button released
-        if (button->state == BUTTON_PRESSED && isMouseReleased && button->onRelease != nullptr) {
+        if (button->state == BUTTON_PRESSED && isMouseReleased) {
             //  use function pointer
-            if (button->state == BUTTON_PRESSED && button->onRelease != nullptr) {
-                button->onRelease();
+            if (button->state == BUTTON_PRESSED) {
+                button->wasPressed = true;
             }
             ChangeState(button, BUTTON_NORMAL);
         }
@@ -61,4 +62,12 @@ void UpdateButton(Button *button, Vector2 mousePosition) {
             ChangeState(button, BUTTON_NORMAL);
         }
     }
+}
+
+bool WasButtonPressed(Button *button) {
+    bool result = button->wasPressed;
+    if (result) {
+        button->wasPressed = false;
+    }
+    return result;
 }

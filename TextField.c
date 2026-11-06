@@ -1,6 +1,6 @@
 #include "TextField.h"
 
-void InitTextFieldBase(TextFieldBase* textFieldBase, Font* font) {
+static void InitTextFieldBase(TextFieldBase* textFieldBase, Font* font) {
     textFieldBase->font = font;
     textFieldBase->position = (Vector2){0, 0};
     textFieldBase->size = 10;
@@ -30,5 +30,5 @@ void DrawTextField(TextField* textField) {
 }
 
 void DrawTextFieldLocalized(TextFieldLocalized* textFieldLocalized) {
-    DrawTextWithOrigin(textFieldLocalized->setts.font, textFieldLocalized->setts.languageUnit->value, textFieldLocalized->setts.position, textFieldLocalized->setts.size, textFieldLocalized->setts.spacing, textFieldLocalized->setts.color, textFieldLocalized->setts.origin);
+    DrawTextWithOrigin(textFieldLocalized->setts.font, textFieldLocalized->localizedText->value, textFieldLocalized->setts.position, textFieldLocalized->setts.size, textFieldLocalized->setts.spacing, textFieldLocalized->setts.color, textFieldLocalized->setts.origin);
 }

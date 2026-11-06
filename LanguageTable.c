@@ -36,13 +36,22 @@ void InitLanguageTable(LanguageTable* languageTable) {
     InitLanguageUnit(&languageTable->languageUnits[20], "English", "NULL");
     InitLanguageUnit(&languageTable->languageUnits[21], "Polish", "NULL");
     InitLanguageUnit(&languageTable->languageUnits[22], "French", "NULL");
+    //  settings
+    InitLanguageUnit(&languageTable->languageUnits[23], "Language", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[24], "Fullscreen", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[25], "FDW", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[26], "Light", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[27], "Dark", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[28], "ExitToDesktop", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[29], "AboutTheProgram", "NULL");
+    InitLanguageUnit(&languageTable->languageUnits[30], "Theme", "NULL");
     //
 }
 
 LanguageUnit* GetLanguageUnit(LanguageTable* languageTable, const char* key) {
     LanguageUnit* result = nullptr;
     for (int i = 0; i < NUMBER_OF_LANGUAGE_UNITS; i++) {
-        if (*(languageTable->languageUnits[i].key) == *key) {
+        if ( strcmp(languageTable->languageUnits[i].key, key) == 0) {
             result = &(languageTable->languageUnits[i]);
             i = NUMBER_OF_LANGUAGE_UNITS;
         }

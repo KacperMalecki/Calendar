@@ -1,0 +1,48 @@
+button
+DefaultButton
+150 150 150 255 120 120 120 255 90 90 90 255
+single
+DefaultButtonText
+30 30 30 255
+single
+TextColor01
+0 0 0 255
+single
+BackgroundCal
+180 180 180 255
+button
+CalendarNormalTile
+150 150 150 255 120 120 120 255 90 90 90 255
+button
+CalendarWeekendTile
+255 150 150 255 225 120 120 255 195 90 90 255
+single
+CalendarOutNormalTile
+70 70 70 255
+single
+CalendarOutWeekendTile
+50 50 50 255
+button
+SettingsButton
+100 100 100 255 70 70 70 255 40 40 40 255
+button
+GoBackButton
+150 150 150 255 120 120 120 255 90 90 90 255
+single
+SettingsBackground
+200 200 200 255
+single
+TitleText
+100 40 40 255
+single
+SettingsSectionText
+230 80 80 255
+button
+DefaultToggle
+150 150 150 255 120 120 120 255 90 90 90 255
+single
+DefaultToggleBackground
+70 70 70 255
+single
+DefaultToggleFill
+130 130 130 255

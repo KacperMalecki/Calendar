@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-typedef enum TextOrigin {
+typedef enum{
     TEXT_CENTER,
     TEXT_TOP,
     TEXT_BOTTOM,

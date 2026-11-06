@@ -5,10 +5,6 @@ void InitCalendar(Calendar *calendar, LanguageTable *languageTable, Font* font) 
     Vector2 tileSize = calendar->tileSize;
     Vector2 calPos = calendar->position;
     Vector2 spacing = calendar->spacing;
-
-    Color highlight = PINK, pressed = PINK;                     //  TODO - read actual colors!!!!!!!!!!!!!!!!
-    ChangeColorByDelta(&highlight, calendar->highlightDelta);
-    ChangeColorByDelta(&pressed, calendar->pressedDelta);
     float fontSize = 50.f;                                      //TESTESTSETSETSETSETSETSETSETSETSET
 
     calendar->font = font;
@@ -18,7 +14,7 @@ void InitCalendar(Calendar *calendar, LanguageTable *languageTable, Font* font) 
             //InitButton(&(calendar->tiles[i][j].button), (Rectangle){},
             InitTile(&calendar->tiles[i][j], (Rectangle){calPos.x + (float)j * tileSize.x + (float)j *spacing.x,
             calPos.y + (float)i * tileSize.y + (float)i *spacing.y,
-            tileSize.x, tileSize.y}, PINK, highlight, pressed, font, "31.");
+            tileSize.x, tileSize.y}, calendar->normalDayClr, calendar->highlightedDayClr, calendar->pressedDayClr, font, "31.");    //  TODO: appropriate colors and text
             calendar->tiles[i][j].dayNr.setts.size = fontSize;
             SetTextOffsetForTile(&calendar->tiles[i][j], calendar->textOffsetForWeekNumbers);
                 //(Color){150,150,150,255}, (Color){120,120,120,255}, (Color){90,90,90,255}); //  TEST TEST TEST

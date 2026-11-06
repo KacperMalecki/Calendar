@@ -1,0 +1,9 @@
+2026 11 4 10 15 2026 11 4 11 0
+Wizyta u lekarza
+3
+Pierwsza wizyta
+Dr Kowalski
+200zł
+2026 11 12 18 0 2026 11 12 21 15
+Wyjście na kawę :]
+0

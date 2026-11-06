@@ -29,7 +29,7 @@ bool LoadSettings(Settings* settings, const char* filePath) {
         else if (strcmp(fdw, "Saturday") == 0)      {settings->fdw = FDW_SATURDAY;}
         else if (strcmp(fdw, "Sunday") == 0)        {settings->fdw = FDW_MONDAY;}
         //  theme
-        if (strcmp(theme, "Bright") == 0)       {settings->theme = THEME_BRIGHT;}
+        if (strcmp(theme, "Light") == 0)        {settings->theme = THEME_LIGHT;}
         else if (strcmp(theme, "Dark") == 0)    {settings->theme = THEME_DARK;}
 
         fclose(file);
@@ -78,7 +78,7 @@ bool GenerateSettingsFile(Settings* settings,const char* filePath) {
     settings->fullscreen = 1;
     settings->language = LANG_POLISH;
     settings->fdw = FDW_MONDAY;
-    settings->theme = THEME_BRIGHT;
+    settings->theme = THEME_LIGHT;
 
     bool result = SaveSettings(settings, filePath);
     return result;
@@ -98,7 +98,7 @@ void LanguageToString(char* str,Language language) {
 void ThemeToString(char* str,Theme theme) {
     if (str != nullptr) {
         switch (theme) {
-            case THEME_BRIGHT:      strcpy(str, "Bright");  break;
+            case THEME_LIGHT:       strcpy(str, "Light");  break;
             case THEME_DARK:        strcpy(str, "Dark");    break;
             default:                strcpy(str, "Unknown"); break;
         }

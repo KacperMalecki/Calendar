@@ -2,7 +2,7 @@
 #define CALENDAR_PROGRAMSTATE_H
 #include "raylib.h"
 
-typedef enum ProgramState {
+typedef enum{
     STATE_CALENDAR,
     STATE_EVENTS_LIST,
     STATE_SETTINGS,
